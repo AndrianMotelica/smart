@@ -1,0 +1,19 @@
+version: "2"
+
+services:
+  php-70:
+    build: ./laravel
+    container_name: php-70
+    ports:
+      - "8080:80"
+      - "4433:443"
+    volumes:
+      - ./laravel/app/povarenok:/var/www/povarenok 
+  
+  povarenokdb:
+    container_name: pov-mariadb
+    build: ./db
+    ports:
+      - "33062:3306"
+    volumes:
+      - ./db/data:/docker-entrypoint-initdb.d
