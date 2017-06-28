@@ -7,13 +7,15 @@ services:
     ports:
       - "8080:80"
       - "4433:443"
+    restart: unless-stopped
     volumes:
-      - ./laravel/app/povarenok:/var/www/povarenok 
+      - /var/www/html/povarenok:/var/www/povarenok 
   
   povarenokdb:
     container_name: pov-mariadb
     build: ./db
     ports:
       - "33062:3306"
+    restart: unless-stopped
     volumes:
       - ./db/data:/docker-entrypoint-initdb.d
