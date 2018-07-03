@@ -1,21 +1,39 @@
 version: "2"
 
 services:
-  php-70:
-    build: ./laravel
-    container_name: php-70
-    ports:
-      - "8080:80"
-      - "4433:443"
-    restart: unless-stopped
+  smart:
+    build: ./app
+    image: smart:1.0
+    container_name: smart
     volumes:
-      - /var/www/html/povarenok:/var/www/povarenok 
+      - "/var/www/smart:/var/www/html"
+    links:
+      - smartdb
+    ports:
+      - "229:22"
+      - "89:80"
+    environment:
+      - APP_NAME=LunchAid
+      - APP_URL=http://localhost:8082
+      - MAIL_DRIVER=smtp
+      - MAIL_HOST='smtp.mailtrap.io'      
+      - MAIL_PORT='2525'
+      - MAIL_USERNAME='f937c9f0a5002b'
+      - MAIL_PASSWORD='c9a066dd98d25d'
+      - MAIL_ENCRYPTION='null'
+      - MAIL_ADDRESS='a.motelica@developmentaid.org'
+      - MAIL_NAME="LuncApp Test"      
+      - MAIL_DELAY=2500
+      - DB_HOST=lunchdb
+      - DB_DATABASE=lunch
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - USR_PWD=aps7xtz      
+    restart: unless-stopped
   
-  povarenokdb:
-    container_name: pov-mariadb
+  smartdb:
+    container_name: smartdb
     build: ./db
     ports:
-      - "33062:3306"
+      - "33060:3306"
     restart: unless-stopped
-    volumes:
-      - ./db/data:/docker-entrypoint-initdb.d
